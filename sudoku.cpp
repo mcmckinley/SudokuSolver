@@ -5,7 +5,6 @@ bool indexKnown[81] = {true};
 int currentCell = -1;
 
 
-/*
 int sudoku[81] = {5, 0, 0,  6, 7, 0,  9, 0, 0,
                   0, 4, 0,  8, 0, 0,  0, 0, 0,
                   8, 0, 0,  5, 0, 0,  6, 1, 3,
@@ -17,10 +16,11 @@ int sudoku[81] = {5, 0, 0,  6, 7, 0,  9, 0, 0,
                   0, 9, 6,  1, 0, 7,  8, 0, 2, 
                   2, 1, 8,  0, 0, 6,  0, 4, 5,
                   0, 5, 0,  0, 8, 0,  0, 9, 0};
-*/
+
 
 
 // This sudoku is designed to beat backtracking algorithms
+/*
 int sudoku[81] = 
    {0, 0, 0,  0, 0, 0,  0, 0, 0,
     0, 0, 0,  0, 0, 3,  0, 8, 5,
@@ -33,7 +33,7 @@ int sudoku[81] =
     5, 0, 0,  0, 0, 0,  0, 7, 3,
     0, 0, 2,  0, 1, 0,  0, 0, 0,
     0, 0, 0,  0, 4, 0,  0, 0, 9};
-
+*/
 
 void displaySudoku(int sudoku[81]){
     for (int h = 0; h < 9; h++) {
