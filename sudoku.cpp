@@ -1,7 +1,10 @@
 #include<iostream>
 
 bool solved = false;
-int numberOfIterations = 0;
+bool indexKnown[81] = {true};
+int currentCell = -1;
+
+
 /*
 int sudoku[81] = {5, 0, 0,  6, 7, 0,  9, 0, 0,
                   0, 4, 0,  8, 0, 0,  0, 0, 0,
@@ -14,10 +17,10 @@ int sudoku[81] = {5, 0, 0,  6, 7, 0,  9, 0, 0,
                   0, 9, 6,  1, 0, 7,  8, 0, 2, 
                   2, 1, 8,  0, 0, 6,  0, 4, 5,
                   0, 5, 0,  0, 8, 0,  0, 9, 0};
-                  */
+*/
 
-// Sudoku designed to beat backtracking algorithms,
-// such as this one
+
+// This sudoku is designed to beat backtracking algorithms
 int sudoku[81] = 
    {0, 0, 0,  0, 0, 0,  0, 0, 0,
     0, 0, 0,  0, 0, 3,  0, 8, 5,
@@ -31,9 +34,6 @@ int sudoku[81] =
     0, 0, 2,  0, 1, 0,  0, 0, 0,
     0, 0, 0,  0, 4, 0,  0, 0, 9};
 
-
-bool indexKnown[81] = {true};
-int currentCell = -1;
 
 void displaySudoku(int sudoku[81]){
     for (int h = 0; h < 9; h++) {
@@ -80,9 +80,8 @@ int findBoxID(int cell){
     return (floor(row/3)*3)+floor(column/3);
 }
 
-// determine if the current cell in its current
-// state has any contradictions.
-// int cell - the ID of the cell to be checking
+// determine if the value at the current cell contradicts with its neighbors.
+// int cell - the ID of the cell to be checking; this param gets modified
 bool contradicts (int cell){
     //cout << "checking if "<<sudoku[currentCell]<< " in " << currentCell;
     //cout << " contradicts\n";
@@ -117,7 +116,6 @@ bool contradicts (int cell){
     }
 
     // 3 - search for contradictions in the current box
-    cell = originalCell;
     int boxToAvoid = originalCell;
     // starts at the top left corner:
     cell = ((floor(findBoxID(cell)/3))*27) + (findBoxID(cell)%3)*3;
@@ -148,7 +146,7 @@ int main() {
             sudoku[currentCell]++;
         } while (contradicts(currentCell));
 
-        // If the value at the current cell is valid, continue.
+        // If the value at the current index is valid, continue.
         // If all possible options have been exhuasted, clear the cell and backtrack
         if (sudoku[currentCell] < 10) {
             findNextCell();
