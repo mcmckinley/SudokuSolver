@@ -1,11 +1,8 @@
 #include<iostream>
-#include<vector>
-#include<cmath>
-#include<array>
-using namespace std;
 
 bool solved = false;
 int numberOfIterations = 0;
+/*
 int sudoku[81] = {5, 0, 0,  6, 7, 0,  9, 0, 0,
                   0, 4, 0,  8, 0, 0,  0, 0, 0,
                   8, 0, 0,  5, 0, 0,  6, 1, 3,
@@ -17,17 +14,22 @@ int sudoku[81] = {5, 0, 0,  6, 7, 0,  9, 0, 0,
                   0, 9, 6,  1, 0, 7,  8, 0, 2, 
                   2, 1, 8,  0, 0, 6,  0, 4, 5,
                   0, 5, 0,  0, 8, 0,  0, 9, 0};
+                  */
 
-//int sudoku[81] = 
-  // {0, 0, 0, 0, 0, 0, 0, 0, 0,
-   // 0, 0, 0, 0, 0, 3, 0, 8, 5,
-   // 0, 0, 1, 0, 2, 0, 0, 0, 0,
-   // 0, 0, 0, 5, 0, 7, 0, 0, 0,
-   // 0, 0, 4, 0, 0, 0, 1, 0, 0,
-   // 0, 9, 0, 0, 0, 0, 0, 0, 0,
-   // 5, 0, 0, 0, 0, 0, 0, 7, 3,
-   // 0, 0, 2, 0, 1, 0, 0, 0, 0,
-   // 0, 0, 0, 0, 4, 0, 0, 0, 9};
+// Sudoku designed to beat backtracking algorithms,
+// such as this one
+int sudoku[81] = 
+   {0, 0, 0,  0, 0, 0,  0, 0, 0,
+    0, 0, 0,  0, 0, 3,  0, 8, 5,
+    0, 0, 1,  0, 2, 0,  0, 0, 0,
+
+    0, 0, 0,  5, 0, 7,  0, 0, 0,
+    0, 0, 4,  0, 0, 0,  1, 0, 0,
+    0, 9, 0,  0, 0, 0,  0, 0, 0,
+
+    5, 0, 0,  0, 0, 0,  0, 7, 3,
+    0, 0, 2,  0, 1, 0,  0, 0, 0,
+    0, 0, 0,  0, 4, 0,  0, 0, 9};
 
 
 bool indexKnown[81] = {true};
@@ -36,14 +38,14 @@ int currentCell = -1;
 void displaySudoku(int sudoku[81]){
     for (int h = 0; h < 9; h++) {
         for (int i = 0; i < 9; i++) {
-            cout << sudoku[i + h*9];
+            std::cout << sudoku[i + h*9];
             if (i%3 ==2) {
-                cout << " ";
+                std::cout << " ";
             }
         }
-        cout << "\n";
+        std::cout << "\n";
         if (h%3 == 2){
-            cout << "\n";
+            std::cout << "\n";
         }
     }
 }
@@ -74,8 +76,10 @@ int findClmID(int cell){
 int findBoxID(int cell){
     int column = findClmID(cell);
     int row = findRowID(cell);
+    // Tricky mathematical operation that returns a box number, given a column and row
     return (floor(row/3)*3)+floor(column/3);
 }
+
 // determine if the current cell in its current
 // state has any contradictions.
 // int cell - the ID of the cell to be checking
@@ -130,26 +134,30 @@ bool contradicts (int cell){
 }
 
 int main() {
+    // Create an array of bools that indicate whether any given index 
+    // is already known.
     for (int i=0; i<81; i++){
         indexKnown[i] = !(sudoku[i]==0);
     }
+
+    // Begin the program at the first unknown index
     findNextCell();
     while (!solved){
-        sudoku[currentCell]++;
-
-        while (contradicts(currentCell)) {
+        // Increment the value until it doesn't contradict with its neighbors
+        do {
             sudoku[currentCell]++;
-        } 
-        //cout << "passing thru line 199\n";
+        } while (contradicts(currentCell));
+
+        // If the value at the current cell is valid, continue.
+        // If all possible options have been exhuasted, clear the cell and backtrack
         if (sudoku[currentCell] < 10) {
             findNextCell();
         } else {
-            // if no valid solution exists, clear the cell and backtrack
             sudoku[currentCell] = 0;
             findPreviousCell();
         }
     }
-    cout << "FINAL SUDOKU:" << endl;
+    std::cout << "FINAL SUDOKU:" << std::endl;
     displaySudoku(sudoku);
     return 0;
 }
